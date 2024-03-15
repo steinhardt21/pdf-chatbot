@@ -9,6 +9,9 @@
 # testing
 /coverage
 
+# doc
+checkpoint.txt
+
 # next.js
 /.next/
 /out/
