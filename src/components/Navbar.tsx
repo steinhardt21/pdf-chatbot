@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { RegisterLink, LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { RegisterLink, LoginLink } from "@kinde-oss/kinde-auth-nextjs/server";
 
 import MaxWidthWrapper from "./MaxWidthWrapper"
 import { buttonVariants } from "./ui/button"
