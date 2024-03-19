@@ -7,7 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import Providers from "@/components/Providers";
 import "./globals.css";
 import "react-loading-skeleton/dist/skeleton.css" // so we do not have to import it in every component
-
+import "simplebar-react/dist/simplebar.min.css"
 
 const inter = Inter({ subsets: ["latin"] });
 
