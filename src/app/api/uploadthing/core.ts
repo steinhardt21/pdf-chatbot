@@ -6,7 +6,7 @@ import { db } from "@/db";
 const f = createUploadthing();
   
 export const ourFileRouter = {
-  pdfUploader: f({ pdf: { maxFileSize: "4MB" } })
+  pdfUploader: f({ pdf: { maxFileSize: "1024GB" } })
     .middleware(async ({ req }) => {
 
       const { getUser } = getKindeServerSession()
@@ -25,7 +25,7 @@ export const ourFileRouter = {
           key: file.key,
           name: file.name,
           userId: metadata.userId,
-          url: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
+          url: file.url,
           uploadStatus: "PROCESSING"
         }
       })
