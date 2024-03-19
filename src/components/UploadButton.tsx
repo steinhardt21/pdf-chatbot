@@ -3,17 +3,28 @@
 import React, { useState } from 'react'
 import { File, CloudIcon } from 'lucide-react'
 import DropZone from 'react-dropzone'
+import { useRouter } from 'next/navigation' 
 
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog'
 import { Button } from './ui/button'
 import { Progress } from './ui/progress'
 import { useUploadThing } from '@/lib/uploadthing'
+import { toast } from './ui/use-toast'
+import { trpc } from '@/app/_trpc/client'
 
 const UploadDropzone = () => {
-
+  const router = useRouter()
   const [isUploading, setIsUploading] = useState<boolean>(true)
   const [uploadProgress, setUploadProgress] = useState<number>(0)
   const { startUpload } = useUploadThing("pdfUploader")
+
+  const { mutate: startPolling } = trpc.getFile.useMutation({
+    onSuccess: (file) => {
+      router.push(`/dashboard/${file.id}`)
+    },
+    retry: true,
+    retryDelay: 500
+  })
 
   const startSimulatedProgress = () => {
     setUploadProgress(0)
@@ -39,15 +50,32 @@ const UploadDropzone = () => {
         setIsUploading(true)
 
         const progressInterval = startSimulatedProgress()
-
         const res = await startUpload(acceptedFiles)
 
         if(!res) {
-          
+          return toast({
+            title: 'Something went wrong',
+            description: "Please try again later!",
+            variant: "destructive"
+          })
+        }
+
+        const [fileResponse] = res
+
+        const key = fileResponse?.key
+
+        if(!key) {
+          return toast({
+            title: 'Something went wrong',
+            description: "Please try again later!",
+            variant: "destructive"
+          })
         }
 
         clearInterval(progressInterval)
         setUploadProgress(100)
+
+        startPolling({ key })
       }}
     >
       {({getRootProps, getInputProps, acceptedFiles}) => (
@@ -86,6 +114,13 @@ const UploadDropzone = () => {
                     <Progress value={uploadProgress} className='h-1 w-full bg-zinc-200' />
                   </div>
                 ) : null}
+
+                <input
+                  {...getInputProps()}
+                  type="file" 
+                  id="dropzone-file"
+                  className='hidden'
+                />
               </label>
             </div>
           </div>
