@@ -3,8 +3,9 @@ import { Inter } from "next/font/google";
 
 import Navbar from "@/components/Navbar";
 import { cn } from "@/lib/utils";
-import "./globals.css";
 import Providers from "@/components/Providers";
+import "./globals.css";
+import "react-loading-skeleton/dist/skeleton.css" // so we do not have to import it in every component
 
 
 const inter = Inter({ subsets: ["latin"] });
