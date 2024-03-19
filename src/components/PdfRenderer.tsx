@@ -16,6 +16,7 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from './ui/dropdown-menu';
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
+import PdfFullScreen from './PdfFullScreen';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
@@ -61,7 +62,10 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
         <div className="flex items-center gap-1.5">
           <Button
             disabled={currentPage <= 1}
-            onClick={() => setCurrentPage((prev) => prev - 1 > 1 ? prev - 1 : 1)} 
+            onClick={() => {
+              setCurrentPage((prev) => prev - 1 > 1 ? prev - 1 : 1)
+              setValue('page', String(currentPage - 1))
+            }} 
             variant={'ghost'} 
             aria-label='previous page'
           >
@@ -86,7 +90,10 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
 
           <Button
             disabled={currentPage === numPages || numPages === undefined}
-            onClick={() => setCurrentPage((prev) => prev + 1 > numPages! ? numPages! : prev + 1)}
+            onClick={() => {
+              setCurrentPage((prev) => prev + 1 > numPages! ? numPages! : prev + 1)
+              setValue('page', String(currentPage + 1))
+            }}
             variant={'ghost'} 
             aria-label='next page'
           >
@@ -122,6 +129,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
             <RotateCw className='h-4 w-4' />
           </Button>
 
+          <PdfFullScreen fileUrl={url} />
         </div>
       </div>
 
