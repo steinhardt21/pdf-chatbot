@@ -7,11 +7,13 @@ import DropZone from 'react-dropzone'
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog'
 import { Button } from './ui/button'
 import { Progress } from './ui/progress'
+import { useUploadThing } from '@/lib/uploadthing'
 
 const UploadDropzone = () => {
 
   const [isUploading, setIsUploading] = useState<boolean>(true)
   const [uploadProgress, setUploadProgress] = useState<number>(0)
+  const { startUpload } = useUploadThing("pdfUploader")
 
   const startSimulatedProgress = () => {
     setUploadProgress(0)
@@ -33,10 +35,16 @@ const UploadDropzone = () => {
   return (
     <DropZone 
       multiple={false} 
-      onDrop={(acceptedFiles) => {
+      onDrop={async (acceptedFiles) => {
         setIsUploading(true)
 
         const progressInterval = startSimulatedProgress()
+
+        const res = await startUpload(acceptedFiles)
+
+        if(!res) {
+          
+        }
 
         clearInterval(progressInterval)
         setUploadProgress(100)
