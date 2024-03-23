@@ -1,11 +1,13 @@
 'use client'
 
+import Link from "next/link"
+import { ChevronLeft, Loader2, XCircle } from "lucide-react"
+
 import Message from "./Message"
 import ChatInput from "./ChatInput"
 import { trpc } from "@/app/_trpc/client"
-import { ChevronLeft, Loader2, XCircle } from "lucide-react"
-import Link from "next/link"
 import { buttonVariants } from "../ui/button"
+import { ChatContextProvider } from "./ChatContext"
 
 interface ChatWrapperProps {
   fileId: string
@@ -84,13 +86,15 @@ const ChatWrapper = ({ fileId }: ChatWrapperProps) => {
   }
 
   return (
-    <div className="relative min-h-full bg-zinc-50 flex divide-zinc-200 divide-y flex-col justify-between">
-      <div className="flex-1 justify-between flex flex-col mb-28">
-        <Message />
-      </div>
+    <ChatContextProvider fileId={fileId}>
+      <div className="relative min-h-full bg-zinc-50 flex divide-zinc-200 divide-y flex-col justify-between">
+        <div className="flex-1 justify-between flex flex-col mb-28">
+          <Message />
+        </div>
 
-      <ChatInput isDisabled={false} />
-    </div>
+        <ChatInput isDisabled={false} />
+      </div>
+    </ChatContextProvider>
   )
 }
 
