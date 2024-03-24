@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { ChevronLeft, Loader2, XCircle } from "lucide-react"
 
-import Message from "./Message"
+import Messages from "./Messages"
 import ChatInput from "./ChatInput"
 import { trpc } from "@/app/_trpc/client"
 import { buttonVariants } from "../ui/button"
@@ -89,7 +89,7 @@ const ChatWrapper = ({ fileId }: ChatWrapperProps) => {
     <ChatContextProvider fileId={fileId}>
       <div className="relative min-h-full bg-zinc-50 flex divide-zinc-200 divide-y flex-col justify-between">
         <div className="flex-1 justify-between flex flex-col mb-28">
-          <Message />
+          <Messages fileId={fileId} />
         </div>
 
         <ChatInput isDisabled={false} />
